@@ -1,0 +1,15 @@
+{
+  "name": "cbr-vfr09-realsim-pro",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "engines": {"node": ">=20"}
+}
