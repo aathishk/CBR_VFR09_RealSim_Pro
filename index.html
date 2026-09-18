@@ -1,13 +1,881 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>CBR VFR-09 · RealSim Pro</title>
-<link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.145/Build/Cesium/Widgets/widgets.css"><style>
-:root{--bg:#02070e;--p:rgba(3,10,19,.86);--line:#2d5a72;--c:#62c9ff;--g:#61ffae;--a:#ffd35c;--r:#ff596b;--muted:#7c96ab;--txt:#e7f5ff}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:var(--txt);font-family:Inter,system-ui,sans-serif}#globe{position:fixed;inset:0}.panel{background:var(--p);border:1px solid rgba(98,201,255,.24);box-shadow:0 8px 30px rgba(0,0,0,.4);backdrop-filter:blur(10px);border-radius:9px}.mono{font-family:'JetBrains Mono','Courier New',monospace}.hidden{display:none!important}#hud{position:fixed;inset:0;z-index:20;pointer-events:none}.brand{position:absolute;top:12px;left:12px;padding:7px 10px;font:800 10px monospace;letter-spacing:.16em;color:var(--muted)}#telem{position:absolute;top:52px;left:12px;width:250px;padding:10px 12px;font-size:10px;line-height:1.65}#mission{position:absolute;top:12px;left:50%;transform:translateX(-50%);min-width:360px;padding:8px 14px;text-align:center;font-size:11px}#right{position:absolute;top:12px;right:12px;width:275px;padding:10px 12px;font-size:9px;line-height:1.75}.xhair{position:absolute;left:50%;top:50%;width:44px;height:44px;border:1px solid #62c9ff72;border-radius:50%;transform:translate(-50%,-50%)}.xhair:before,.xhair:after{content:"";position:absolute;background:#62c9ff72}.xhair:before{left:21px;top:-10px;width:2px;height:62px}.xhair:after{top:21px;left:-10px;height:2px;width:62px}.toast{position:absolute;left:50%;top:22%;transform:translateX(-50%);opacity:0;padding:8px 13px;background:#03111c;border:1px solid #61ffae4a;color:var(--g);font:11px monospace;transition:.15s;white-space:nowrap}.toast.show{opacity:1}#pfd{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);width:430px;height:270px;pointer-events:none}#approach{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);padding:8px 13px;display:flex;gap:16px;align-items:center}.papi{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 2px;background:#f44}.papi.w{background:#fff8e5}#bottom{position:absolute;left:12px;bottom:12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.btn{pointer-events:auto;border:1px solid var(--c);background:transparent;color:var(--c);padding:7px 9px;border-radius:7px;font-weight:800;cursor:pointer;font-size:10px}.btn.pri{background:var(--c);color:#06121a}.btn.hot{border-color:var(--a);color:var(--a)}#sys{position:fixed;top:0;right:-380px;z-index:40;width:365px;height:100%;overflow:auto;background:#020912f8;border-left:1px solid var(--line);padding:16px;transition:right .25s;pointer-events:auto}.sys-open{right:0!important}.syshead{font:800 11px monospace;color:var(--c);letter-spacing:.15em}.sysrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ffffff08;font:10px monospace}.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 38%,#113c5660,#000 72%)}.card{width:min(790px,calc(100vw - 26px));padding:28px;background:#020812f5;border:1px solid #62c9ff45;border-radius:16px;box-shadow:0 25px 100px #000}.eyebrow{font:800 10px monospace;letter-spacing:.18em;color:var(--c)}h1{margin:6px 0;font-size:28px;letter-spacing:.05em}.desc{font-size:12px;color:#9ab0c2;line-height:1.55}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0}.tile{padding:8px;border:1px solid #62c9ff15;background:#62c9ff07;border-radius:7px;font-size:10px;color:#8fa7b9}.tile b{display:block;color:var(--c);margin-bottom:3px}.actions{display:flex;flex-wrap:wrap;gap:6px}.note{margin-top:12px;font:10px/1.55 monospace;color:#71899c}@media(max-width:800px){#right{display:none}#mission{min-width:0;width:62vw}.grid{grid-template-columns:1fr 1fr}#pfd{width:92vw;height:58vw;bottom:62px}#telem{width:190px;font-size:9px}.btn{padding:7px 8px}}
-</style><script>window.CESIUM_BASE_URL='https://cesium.com/downloads/cesiumjs/releases/1.145/Build/Cesium/';</script><script src="https://cesium.com/downloads/cesiumjs/releases/1.145/Build/Cesium/Cesium.js"></script><script src="/config.js"></script></head><body>
-<div id="globe"></div><canvas id="pfd"></canvas>
-<div id="hud" class="hidden"><div class="brand panel">CBR // VFR-09 REALSIM PRO · VOCB</div><div id="telem" class="panel mono">
-<div>ALT <b id="h-alt">-----</b> FT · IAS <b id="h-ias">---</b> KT</div><div>TAS <b id="h-tas">---</b> KT · M<b id="h-mach">-.--</b> · G <b id="h-g">-.--</b></div><div>HDG <b id="h-hdg">---</b>° · VS <b id="h-vs">----</b> FPM</div><div>AOA <b id="h-aoa">--.-</b>° · β <b id="h-beta">--.-</b>°</div><div>N1 <b id="h-n1">--</b>% · THR <b id="h-thr">--</b>%</div><div>FUEL <b id="h-fuel">---</b> L · <b id="h-phase">---</b></div><div>ENG <b id="h-eng">OFF</b> · GR <b id="h-gear">DOWN</b> · FLP <b id="h-flaps">0</b></div></div>
-<div id="mission" class="panel"><b id="mis-title">MISSION // DEPART PSG TECH</b><div id="mis-sub" style="color:var(--muted);margin-top:3px">NAV CODISSIA</div></div><div id="right" class="panel mono"><div>WORLD <b id="h-world">BOOT</b></div><div>INPUT <b id="h-src">KEYBOARD</b></div><div>WX <b id="h-wx">SIMULATED</b></div><div>WIND <b id="h-wind">CALM</b></div><div>TRAFFIC <b id="h-traffic">OFF</b></div><div>SCORE <b id="h-score">0</b> · BAT <b id="h-battery">ON</b></div></div><div class="xhair"></div>
-<div id="approach" class="panel mono hidden"><div><div style="font-size:8px;color:var(--muted)">ILS RWY 23</div><div id="papi"></div></div><div>LOC <b id="a-loc">--</b></div><div>G/S <b id="a-gs">--</b></div><div>DME <b id="a-thr">--</b></div><div>DH <b id="a-dh">--</b> FT</div></div>
-<div id="bottom"><button class="btn pri" id="view">CAMERA / V</button><button class="btn" id="gyro">PHONE GYRO</button><button class="btn" id="ap">AUTOPILOT</button><button class="btn" id="weather">LIVE WIND</button><button class="btn" id="systems">SYSTEMS</button><button class="btn" id="rec">● REC</button><button class="btn" id="play">▶ REPLAY</button><button class="btn hot" id="resetHud">RESET</button></div><div id="toast" class="toast"></div></div>
-<div id="sys"><div class="syshead">CBR VFR-09 · SYSTEMS & VALIDATION</div><div class="sysrow"><span>FDM</span><b>6-DOF / QUATERNION / RK4 120Hz</b></div><div class="sysrow"><span>Aero</span><b>α β / rates / stall / flaps / ground effect</b></div><div class="sysrow"><span>Prop</span><b>power / advance-ratio / torque / P-factor</b></div><div class="sysrow"><span>Atmos</span><b>ISA + METAR wind/gust</b></div><div class="sysrow"><span>Nav</span><b>GPS route / ILS / PAPI / DME</b></div><div class="sysrow"><span>World</span><b>Cesium 1.145 / Google 3D / ion terrain / OSM fallback</b></div><div class="sysrow"><span>Traffic</span><b>OpenSky regional state vectors</b></div><div class="sysrow"><span>Inputs</span><b>Keyboard / Gamepad / ESP32 / Phone</b></div><div class="sysrow"><span>Replay</span><b>10 Hz deterministic state snapshots</b></div><div style="margin-top:14px;color:var(--muted);font:10px/1.6 monospace">This is an engineering simulator foundation. Aircraft-specific fidelity requires a validated dataset and performance checks against an AFM/POH or validated FDM. No claim of certification is made.</div></div>
-<div id="boot" class="overlay"><div class="card"><div class="eyebrow">CBR · VOCB COIMBATORE · VFR-09</div><h1>NEXT-GENERATION REALISTIC FLIGHT SIMULATOR</h1><div class="desc">Independent browser simulator inspired by the publicly described feature set of GeoFS and the open architecture patterns of God's Eye View: physics-based aircraft handling, real-world 3D geography, instruments, weather, traffic, navigation and hardware control.</div><div class="grid"><div class="tile"><b>WORLD</b>CesiumJS 1.145 with Google Photorealistic 3D, ion route or OSM/building fallback</div><div class="tile"><b>FDM</b>Fixed-step 120 Hz nonlinear 6-DOF body dynamics with quaternion RK4 propagation</div><div class="tile"><b>AERO</b>Lift, drag, sideforce, stability derivatives, flap/gear effects, post-stall model</div><div class="tile"><b>PROP</b>Advance-ratio propeller thrust, shaft power, torque and directional asymmetry</div><div class="tile"><b>NAV</b>VFR route, ILS localizer, 3° glideslope, PAPI and DME-style range</div><div class="tile"><b>LIVE DATA</b>VOCB METAR wind and optional OpenSky regional traffic via server proxy</div></div><div class="actions"><button class="btn pri" id="start">▶ FLY — ENGINE RUNNING</button><button class="btn" id="cold">❄ COLD & DARK</button><button class="btn" id="serial">🌀 ESP32 / MPU6050</button><button class="btn" id="demo">🤖 AUTOPILOT TRAINING</button></div><div class="note">KEYBOARD: W/S pitch · A/D roll · Q/E rudder · SHIFT/CTRL throttle · G gear · F flaps · B brakes · Z/X trim · V camera · P autopilot · I engine start · M engine stop. Gamepad: standard mapping. Phone: open PHONE GYRO on the LAN. C calibrates the IMU. Set GOOGLE_MAPS_API_KEY for photorealistic 3D.</div></div></div>
-<script type="module" src="/src/main.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tamil Nadu Flight Sim - VFR-02</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cyan: #78e8ff;
+      --green: #61ffae;
+      --amber: #ffd86a;
+      --red: #ff5f70;
+      --panel: rgba(5, 12, 20, 0.72);
+      --line: rgba(120, 232, 255, 0.28);
+      --muted: #86a1b2;
+      --bg-dark: #03070b;
+    }
+    
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: white;
+    }
+
+    /* Map */
+    gmp-map-3d {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    /* Glassmorphic Panels */
+    .glass {
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .hidden {
+      display: none !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Start Menu */
+    #menu {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(3,7,11,0.6) 0%, rgba(3,7,11,0.95) 100%);
+      backdrop-filter: blur(8px);
+      transition: opacity 0.5s ease;
+    }
+    .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 4px; color: var(--cyan); margin-bottom: 12px; }
+    .title { font-size: 56px; font-weight: 800; letter-spacing: -1px; margin: 0 0 16px 0; }
+    .desc { font-size: 16px; color: var(--muted); max-width: 500px; text-align: center; margin-bottom: 40px; line-height: 1.5; }
+    .btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 8px;
+      transition: all 0.2s;
+      width: 300px;
+      text-align: center;
+    }
+    .btn:hover { background: rgba(120, 232, 255, 0.15); box-shadow: 0 0 15px rgba(120, 232, 255, 0.2); }
+    .btn.primary { background: var(--cyan); color: var(--bg-dark); border: none; font-weight: 700; }
+    .btn.primary:hover { background: #56dcf7; box-shadow: 0 0 20px var(--cyan); }
+    .controls-ref { margin-top: 40px; font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; text-align: center; line-height: 1.6;}
+
+    /* HUD */
+    #hud {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+    }
+    
+    .panel { position: absolute; padding: 16px; pointer-events: auto; }
+    .telemetry-font { font-family: 'JetBrains Mono', monospace; }
+    
+    #brand { top: 20px; left: 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--cyan); }
+    
+    #telemetry { top: 70px; left: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; min-width: 250px; }
+    .tel-item { display: flex; flex-direction: column; }
+    .tel-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+    .tel-val { font-size: 18px; font-weight: 700; }
+    .cyan-text { color: var(--cyan); }
+    
+    #mission { top: 20px; left: 50%; transform: translateX(-50%); text-align: center; min-width: 350px; }
+    #mission-title { font-size: 11px; color: var(--cyan); font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+    #mission-obj { font-size: 16px; font-weight: 700; font-family: 'JetBrains Mono'; }
+    #mission-dist { font-size: 14px; color: var(--amber); font-family: 'JetBrains Mono'; margin-top: 4px; }
+
+    #right { top: 20px; right: 20px; text-align: right; }
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-right: 6px; }
+    .status-dot.active { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    
+    #gamepad-panel {
+      top: 140px; right: 20px;
+      width: 220px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .gp-title { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono'; display: flex; align-items: center; }
+    .gp-id { font-size: 11px; color: var(--cyan); font-family: 'JetBrains Mono'; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px;}
+    .gp-sticks { display: flex; justify-content: space-between; }
+    .gp-canvas { border: 1px solid var(--line); border-radius: 50%; background: rgba(0,0,0,0.5); }
+    .gp-triggers { display: flex; flex-direction: column; gap: 6px; }
+    .trigger-bar { height: 6px; width: 100%; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .trigger-fill { height: 100%; background: var(--cyan); width: 0%; transition: width 0.05s; }
+    .gp-buttons { display: flex; gap: 8px; justify-content: center; margin-top: 4px; }
+    .gp-btn { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--muted); display: flex; align-items: center; justify-content: center; font-size: 9px; opacity: 0.3; transition: all 0.1s; font-family: 'JetBrains Mono'; }
+    .gp-btn.active { opacity: 1; border-color: var(--cyan); color: var(--bg-dark); }
+    .gp-btn.btn-a.active { background: var(--green); border-color: var(--green); }
+    .gp-btn.btn-b.active { background: var(--red); border-color: var(--red); }
+    .gp-btn.btn-x.active { background: var(--cyan); border-color: var(--cyan); }
+    .gp-btn.btn-y.active { background: var(--amber); border-color: var(--amber); }
+
+    #bottom { bottom: 20px; left: 20px; font-size: 11px; font-family: 'JetBrains Mono'; color: var(--muted); line-height: 1.6; }
+    
+    #speedbar-container {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 12px; background: rgba(0,0,0,0.5);
+      border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+    }
+    #speedbar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--green), var(--amber), var(--red));
+      transition: width 0.1s linear;
+    }
+
+    #cross {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 40px; height: 40px;
+      border: 1px solid rgba(120, 232, 255, 0.4);
+      border-radius: 50%;
+    }
+    #cross::before { content:''; position:absolute; top:50%; left:-10px; right:-10px; height:1px; background:rgba(120,232,255,0.6); }
+    #cross::after { content:''; position:absolute; left:50%; top:-10px; bottom:-10px; width:1px; background:rgba(120,232,255,0.6); }
+    #cross-dot { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:4px; height:4px; background:var(--cyan); border-radius:50%; z-index: 2;}
+
+    #toast {
+      position: absolute; top: 30%; left: 50%; transform: translateX(-50%);
+      background: rgba(120, 232, 255, 0.15); border: 1px solid var(--cyan); color: var(--cyan);
+      padding: 12px 24px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 14px;
+      opacity: 0; transition: opacity 0.3s; font-weight: 700; text-shadow: 0 0 8px rgba(120, 232, 255, 0.5);
+    }
+
+    /* Cockpit Overlay */
+    #cockpit {
+      position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5;
+      pointer-events: none;
+      box-shadow: inset 0 60px 40px -20px rgba(0,0,0,0.9), inset 0 -40px 40px -20px rgba(0,0,0,0.9);
+      background: 
+        linear-gradient(90deg, rgba(15,15,20,0.9) 0%, rgba(15,15,20,0.1) 15%, transparent 20%, transparent 80%, rgba(15,15,20,0.1) 85%, rgba(15,15,20,0.9) 100%),
+        linear-gradient(0deg, rgba(20,20,25,0.95) 0%, rgba(20,20,25,0.7) 12%, transparent 20%);
+    }
+    .pillar { position: absolute; top: 0; bottom: 0; width: 80px; background: #0c0e12; border-right: 2px solid #1a1d24; }
+    .pillar-left { left: 15%; transform: skewX(-15deg); }
+    .pillar-right { right: 15%; transform: skewX(15deg); border-right: none; border-left: 2px solid #1a1d24; }
+    
+    #attitude-container {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      width: 140px; height: 140px; border-radius: 50%; border: 4px solid #1a1d24;
+      background: #333; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    #compass-ribbon {
+      position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+      width: 300px; height: 30px; background: rgba(0,0,0,0.6); border: 1px solid #333;
+      border-radius: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono'; font-size: 14px; font-weight: bold; color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Maps 3D element -->
+  <gmp-map-3d id="map" mode="HYBRID" default-ui-hidden="true" gesture-handling="none"></gmp-map-3d>
+
+  <!-- Cockpit Overlay (FPV) -->
+  <div id="cockpit" class="hidden">
+    <div class="pillar pillar-left"></div>
+    <div class="pillar pillar-right"></div>
+    <div id="compass-ribbon">HDG <span id="comp-val" class="cyan-text" style="margin-left:8px;">090°</span></div>
+    <div id="attitude-container">
+      <canvas id="attitude-canvas" width="140" height="140"></canvas>
+    </div>
+  </div>
+
+  <!-- HUD overlay -->
+  <div id="hud" class="hidden">
+    <!-- Brand -->
+    <div id="brand" class="glass panel">TN FLIGHT SIM // VFR TRAINING // BUILD 02</div>
+    
+    <!-- Telemetry -->
+    <div id="telemetry" class="glass panel telemetry-font">
+      <div class="tel-item"><span class="tel-label">ALT (ft)</span><span id="t-alt" class="tel-val cyan-text">0</span></div>
+      <div class="tel-item"><span class="tel-label">SPD (kt)</span><span id="t-spd" class="tel-val">0</span></div>
+      <div class="tel-item"><span class="tel-label">HDG (°)</span><span id="t-hdg" class="tel-val">000</span></div>
+      <div class="tel-item"><span class="tel-label">V/S (fpm)</span><span id="t-vs" class="tel-val">0</span></div>
+      <div class="tel-item"><span class="tel-label">PITCH</span><span id="t-pit" class="tel-val">0.0</span></div>
+      <div class="tel-item"><span class="tel-label">ROLL</span><span id="t-rol" class="tel-val">0.0</span></div>
+      <div class="tel-item"><span class="tel-label">THR (%)</span><span id="t-thr" class="tel-val">0</span></div>
+      <div class="tel-item"><span class="tel-label">G-FORCE</span><span id="t-g" class="tel-val">1.0</span></div>
+    </div>
+    
+    <!-- Mission -->
+    <div id="mission" class="glass panel">
+      <div id="mission-title">CURRENT OBJECTIVE</div>
+      <div id="mission-obj">DEPART PSG TECH</div>
+      <div id="mission-dist">0.00 NM</div>
+    </div>
+    
+    <!-- Right Panel -->
+    <div id="right" class="glass panel telemetry-font">
+      <div style="font-size: 11px; color: var(--muted); margin-bottom: 8px;">
+        LAT: <span id="t-lat" class="cyan-text">0.00000</span><br>
+        LNG: <span id="t-lng" class="cyan-text">0.00000</span>
+      </div>
+      <div style="font-size: 10px; margin-bottom: 4px;">
+        <span id="s-dot" class="status-dot"></span><span id="s-text">KEYBOARD</span>
+      </div>
+      <div style="font-size: 10px; color: var(--cyan);">MODE: <span id="t-mode">FLIGHT</span></div>
+    </div>
+
+    <!-- Gamepad Panel -->
+    <div id="gamepad-panel" class="glass panel">
+      <div class="gp-title"><span id="gp-dot" class="status-dot"></span> <span id="gp-status">DISCONNECTED</span></div>
+      <div id="gp-id" class="gp-id">NO CONTROLLER</div>
+      <div class="gp-sticks">
+        <canvas id="gp-ls" class="gp-canvas" width="40" height="40"></canvas>
+        <canvas id="gp-rs" class="gp-canvas" width="40" height="40"></canvas>
+      </div>
+      <div class="gp-triggers">
+        <div><span style="font-size:9px; color:var(--muted); font-family:'JetBrains Mono';">LT (BRK)</span><div class="trigger-bar"><div id="gp-lt" class="trigger-fill"></div></div></div>
+        <div><span style="font-size:9px; color:var(--muted); font-family:'JetBrains Mono';">RT (THR)</span><div class="trigger-bar"><div id="gp-rt" class="trigger-fill"></div></div></div>
+      </div>
+      <div class="gp-buttons">
+        <div id="gp-btn-x" class="gp-btn btn-x">X</div>
+        <div id="gp-btn-y" class="gp-btn btn-y">Y</div>
+        <div id="gp-btn-a" class="gp-btn btn-a">A</div>
+        <div id="gp-btn-b" class="gp-btn btn-b">B</div>
+      </div>
+    </div>
+    
+    <!-- Bottom Left -->
+    <div id="bottom" class="glass panel">
+      [W/S] Pitch &nbsp;&nbsp;[A/D] Roll &nbsp;&nbsp;[Q/E] Yaw<br>
+      [SHFT/CTRL] Throttle &nbsp;&nbsp;[SPACE] Boost<br>
+      [V] View &nbsp;&nbsp;[C] Calibrate IMU &nbsp;&nbsp;[R] Reset<br>
+      SCORE: <span id="t-score" class="cyan-text" style="font-size:14px; font-weight:bold;">0</span>
+    </div>
+    
+    <!-- Center Reticle -->
+    <div id="cross"><div id="cross-dot"></div></div>
+    
+    <!-- Speedbar -->
+    <div id="speedbar-container"><div id="speedbar"></div></div>
+    
+    <!-- Toast notification -->
+    <div id="toast">SYSTEM READY</div>
+  </div>
+
+  <!-- Start Menu -->
+  <div id="menu">
+    <div class="eyebrow">TAMIL NADU // REAL-WORLD MAP SIMULATION</div>
+    <div class="title">IMU FLIGHT · VFR-02</div>
+    <div class="desc">
+      Explore Tamil Nadu in high-fidelity 3D with Google Maps.<br>
+      Complete VFR waypoint missions across 7 regional airports.<br>
+      Supports Keyboard, Gamepad (Xbox/Ant Esports), or ESP32/MPU6050 via Web Serial.
+    </div>
+    
+    <button class="btn primary" id="btn-start">START FLIGHT (KEYBOARD / GAMEPAD)</button>
+    <button class="btn" id="btn-serial">CONNECT ESP32 / MPU6050</button>
+    <button class="btn" id="btn-demo">AUTOPILOT TOUR</button>
+    
+    <div class="controls-ref">
+      ESP32 Serial Format (115200 baud): {"roll":12.5,"pitch":-4.2,"yaw":31.8}<br>
+      Gamepad mapping uses Standard Gamepad API (Left Stick=Roll/Pitch, Triggers=Throttle).
+    </div>
+  </div>
+
+  <!-- Load Google Maps API -->
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ9QtC-j8jLQEDkHvnOZdxNIbpD7nQKGM&v=beta"></script>
+
+  <script>
+    // --- Data ---
+    const AIRPORTS = [
+      {name:'CHENNAI INTL (MAA)', icao:'VOMM', lat:12.9822, lng:80.1636, rwyHdg:70, alt:16, runway:'07/25'},
+      {name:'COIMBATORE INTL (CJB)', icao:'VOCB', lat:11.0300, lng:77.0434, rwyHdg:47, alt:330, runway:'05/23'},
+      {name:'MADURAI (IXM)', icao:'VOMD', lat:9.8336, lng:78.0894, rwyHdg:87, alt:139, runway:'09/27'},
+      {name:'TIRUCHIRAPPALLI INTL (TRZ)', icao:'VOTR', lat:10.7654, lng:78.7148, rwyHdg:90, alt:88, runway:'09/27'},
+      {name:'SALEM (SXV)', icao:'VOSM', lat:11.7821, lng:78.0644, rwyHdg:35, alt:301, runway:'04/22'},
+      {name:'TUTICORIN (TCR)', icao:'VOTK', lat:8.7242, lng:78.0258, rwyHdg:101, alt:10, runway:'10/28'},
+      {name:'THANJAVUR AFB (TJV)', icao:'VOTJ', lat:10.7222, lng:79.1017, rwyHdg:68, alt:77, runway:'07/25'}
+    ];
+
+    const LANDMARKS = [
+      {name:'PSG COLLEGE OF TECHNOLOGY', lat:11.02555, lng:77.00398, mission:'DEPART PSG TECH'},
+      {name:'COIMBATORE AIRPORT', lat:11.0300, lng:77.0434, mission:'FLY OVER CJB AIRPORT'},
+      {name:'SALEM AIRPORT', lat:11.7821, lng:78.0644, mission:'REACH SALEM SECTOR'},
+      {name:'TIRUCHIRAPPALLI AIRPORT', lat:10.7654, lng:78.7148, mission:'TRICHY FLYOVER'},
+      {name:'THANJAVUR TEMPLE', lat:10.7828, lng:79.1318, mission:'THANJAVUR SECTOR'},
+      {name:'MADURAI MEENAKSHI TEMPLE', lat:9.9195, lng:78.1194, mission:'MADURAI APPROACH'},
+      {name:'TUTICORIN PORT', lat:8.7642, lng:78.1348, mission:'TUTICORIN COASTAL'},
+      {name:'MARINA BEACH, CHENNAI', lat:13.0475, lng:80.2824, mission:'CHENNAI COASTLINE'},
+      {name:'CHENNAI AIRPORT', lat:12.9822, lng:80.1636, mission:'FINAL: LAND AT MAA'}
+    ];
+
+    const state = {
+      lat: 11.02555, lng: 77.00398, alt: 350,
+      pitch: 0, roll: 0, heading: 90,
+      throttle: 0.52, speed: 70, vs: 0,
+      sensor: {pitch:0, roll:0, yaw:0},
+      neutral: {pitch:0, roll:0, yaw:0},
+      serial: false, demo: false, boost: false, alive: true, flightAssist: true,
+      fpv: false, missionIndex: 1, score: 0,
+      parking: false, parkingTarget: null,
+      last: performance.now()
+    };
+
+    // Globals
+    let map, aircraft, activeWaypointMarker;
+    let Map3DElement, Model3DElement, Marker3DElement;
+    let loopStarted = false;
+
+    // --- Inputs ---
+    const keys = {};
+    window.addEventListener('keydown', e => {
+      keys[e.key.toLowerCase()] = true;
+      if (e.code === 'Space') { state.boost = true; e.preventDefault(); }
+      if (e.key === 'Shift' || e.key === 'Control') e.preventDefault();
+      if (e.key.toLowerCase() === 'r') reset();
+      if (e.key.toLowerCase() === 'c') calibrate();
+      if (e.key.toLowerCase() === 'v') toggleView();
+    });
+    window.addEventListener('keyup', e => {
+      keys[e.key.toLowerCase()] = false;
+      if (e.code === 'Space') state.boost = false;
+    });
+
+    // Gamepad state
+    let activeGamepad = null;
+    let prevButtons = [];
+    
+    // --- Utils ---
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function angleDiff(a, b) { return (a-b+540)%360-180; }
+    function metersPerDeg(lat) {
+      const r = Math.PI/180;
+      return {
+        lat: 111132.92 - 559.82*Math.cos(2*lat*r) + 1.175*Math.cos(4*lat*r),
+        lng: 111412.84*Math.cos(lat*r) - 93.5*Math.cos(3*lat*r)
+      };
+    }
+    function distNM(lat1, lng1, lat2, lng2) {
+      const R = 3440.065; // Earth radius in nautical miles
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function toast(text) {
+      const el = document.getElementById('toast');
+      el.textContent = text;
+      el.style.opacity = '1';
+      setTimeout(() => el.style.opacity = '0', 2000);
+    }
+    
+    function toggleView() {
+      state.fpv = !state.fpv;
+      toast(state.fpv ? 'COCKPIT VIEW' : 'CHASE CAMERA');
+      if (state.fpv) {
+        document.getElementById('cockpit').classList.remove('hidden');
+        if (aircraft) aircraft.style.display = 'none';
+      } else {
+        document.getElementById('cockpit').classList.add('hidden');
+        if (aircraft) aircraft.style.display = 'block';
+      }
+    }
+
+    function calibrate() {
+      state.neutral = {...state.sensor};
+      toast('IMU CALIBRATED');
+    }
+
+    function reset() {
+      state.lat = LANDMARKS[0].lat;
+      state.lng = LANDMARKS[0].lng;
+      state.alt = 350;
+      state.pitch = 0; state.roll = 0; state.heading = 90;
+      state.throttle = 0.5; state.speed = 70;
+      state.missionIndex = 1; state.score = 0; state.parking = false;
+      addWaypointMarker(LANDMARKS[state.missionIndex]);
+      toast('RESET // PSG TECH');
+    }
+
+    // --- Serial (ESP32) ---
+    async function connectSerial() {
+      try {
+        const port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 115200 });
+        toast('ESP32 CONNECTED');
+        state.serial = true;
+        document.getElementById('s-text').textContent = 'ESP32 / MPU6050';
+        document.getElementById('s-dot').classList.add('active');
+        
+        const decoder = new TextDecoderStream();
+        port.readable.pipeTo(decoder.writable);
+        const reader = decoder.readable.getReader();
+        
+        let buffer = '';
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += value;
+          let lines = buffer.split('\n');
+          buffer = lines.pop(); // keep incomplete line
+          for (let line of lines) {
+            try {
+              let data = JSON.parse(line.trim());
+              if (data.roll !== undefined) state.sensor.roll = data.roll;
+              if (data.pitch !== undefined) state.sensor.pitch = data.pitch;
+              if (data.yaw !== undefined) state.sensor.yaw = data.yaw;
+            } catch(e) {}
+          }
+        }
+      } catch (e) {
+        console.error(e);
+        toast('SERIAL CONNECTION FAILED');
+        state.serial = false;
+      }
+    }
+
+    // --- Maps 3D Init ---
+    async function init3D() {
+      const libs = await google.maps.importLibrary('maps3d');
+      Map3DElement = libs.Map3DElement;
+      Model3DElement = libs.Model3DElement;
+      Marker3DElement = libs.Marker3DElement;
+      
+      map = document.getElementById('map');
+      map.center = {lat: state.lat, lng: state.lng, altitude: 0};
+      map.range = 1300; map.tilt = 68; map.heading = 90; map.roll = 0; map.fov = 55;
+      
+      try {
+        aircraft = new Model3DElement({
+          src: '/Airplane_by_Poly_by_Google_-_8VysVKMXN2J.glb', // Fallback model if aircraft not found locally, just to have a model
+          position: {lat: state.lat, lng: state.lng, altitude: state.alt},
+          orientation: {heading: state.heading, tilt: 0, roll: 0},
+          scale: 5,
+          altitudeMode: 'ABSOLUTE'
+        });
+        map.append(aircraft);
+      } catch(e) { console.warn('Model fail', e); }
+
+      // Airport Markers
+      AIRPORTS.forEach(ap => {
+        const m = new Marker3DElement({
+          position: {lat: ap.lat, lng: ap.lng, altitude: ap.alt + 50},
+          altitudeMode: 'ABSOLUTE',
+          extruded: true,
+          label: ap.name
+        });
+        map.append(m);
+      });
+
+      addWaypointMarker(LANDMARKS[state.missionIndex]);
+    }
+
+    function addWaypointMarker(lm) {
+      if (!Marker3DElement) return;
+      try { if (activeWaypointMarker) map.removeChild(activeWaypointMarker); } catch(e) {}
+      activeWaypointMarker = new Marker3DElement({
+        position: {lat: lm.lat, lng: lm.lng, altitude: 200},
+        altitudeMode: 'ABSOLUTE',
+        extruded: true,
+        label: 'TARGET: ' + lm.name
+      });
+      map.append(activeWaypointMarker);
+    }
+
+    // --- Gamepad Logic ---
+    function pollGamepad() {
+      const gamepads = navigator.getGamepads();
+      activeGamepad = null;
+      for (const gp of gamepads) {
+        if (gp && gp.connected) { activeGamepad = gp; break; }
+      }
+      
+      const stDot = document.getElementById('gp-dot');
+      const stText = document.getElementById('gp-status');
+      const gpId = document.getElementById('gp-id');
+      
+      if (activeGamepad) {
+        stDot.classList.add('active');
+        stText.textContent = 'CONNECTED';
+        stText.style.color = 'var(--green)';
+        gpId.textContent = activeGamepad.id.substring(0, 30);
+        
+        // Visualize Left Stick
+        const ctxL = document.getElementById('gp-ls').getContext('2d');
+        ctxL.clearRect(0,0,40,40);
+        ctxL.strokeStyle = '#2a4a5a';
+        ctxL.beginPath(); ctxL.arc(20,20,15,0,Math.PI*2); ctxL.stroke();
+        ctxL.fillStyle = '#78e8ff';
+        ctxL.beginPath();
+        ctxL.arc(20 + activeGamepad.axes[0]*15, 20 + activeGamepad.axes[1]*15, 4, 0, Math.PI*2);
+        ctxL.fill();
+
+        // Visualize Right Stick
+        const ctxR = document.getElementById('gp-rs').getContext('2d');
+        ctxR.clearRect(0,0,40,40);
+        ctxR.strokeStyle = '#2a4a5a';
+        ctxR.beginPath(); ctxR.arc(20,20,15,0,Math.PI*2); ctxR.stroke();
+        ctxR.fillStyle = '#78e8ff';
+        ctxR.beginPath();
+        ctxR.arc(20 + activeGamepad.axes[2]*15, 20 + activeGamepad.axes[3]*15, 4, 0, Math.PI*2);
+        ctxR.fill();
+        
+        // Triggers
+        document.getElementById('gp-lt').style.width = (activeGamepad.buttons[6].value * 100) + '%';
+        document.getElementById('gp-rt').style.width = (activeGamepad.buttons[7].value * 100) + '%';
+        
+        // Buttons: A(0), B(1), X(2), Y(3)
+        const checkBtn = (idx, id) => {
+          const el = document.getElementById(id);
+          if (activeGamepad.buttons[idx].pressed) el.classList.add('active');
+          else el.classList.remove('active');
+        };
+        checkBtn(0, 'gp-btn-a'); checkBtn(1, 'gp-btn-b'); checkBtn(2, 'gp-btn-x'); checkBtn(3, 'gp-btn-y');
+        
+        // Edge detections
+        for (let i=0; i<4; i++) {
+          const pressed = activeGamepad.buttons[i].pressed;
+          const wasPressed = prevButtons[i] || false;
+          if (pressed && !wasPressed) {
+            if (i===0) toggleView(); // A
+            if (i===1) reset(); // B
+            if (i===2) calibrate(); // X
+            if (i===3) { state.flightAssist = !state.flightAssist; toast(state.flightAssist?'ASSIST ON':'ASSIST OFF'); } // Y
+          }
+          prevButtons[i] = pressed;
+        }
+        
+        state.boost = activeGamepad.buttons[4].pressed; // LB
+      } else {
+        stDot.classList.remove('active');
+        stText.textContent = 'DISCONNECTED';
+        stText.style.color = 'var(--muted)';
+        gpId.textContent = 'NO CONTROLLER';
+      }
+    }
+
+    // --- Flight Logic ---
+    function controls(dt) {
+      let pi=0, ri=0, yi=0;
+      
+      // Keyboard
+      if (!state.serial && !state.demo) {
+        ri += (keys.a?-1:0) + (keys.d?1:0);
+        pi += (keys.w?1:0) + (keys.s?-1:0);
+        yi += (keys.q?-1:0) + (keys.e?1:0);
+      }
+      
+      // Gamepad (radial deadzone)
+      if (activeGamepad && !state.demo) {
+        const dz = 0.15;
+        const applyDz = (x,y) => { const m=Math.hypot(x,y); if(m<dz) return {x:0,y:0}; const n=Math.min(1,(m-dz)/(1-dz)); return {x:(x/m)*n, y:(y/m)*n}; };
+        const ls = applyDz(activeGamepad.axes[0], activeGamepad.axes[1]);
+        const rs = applyDz(activeGamepad.axes[2], activeGamepad.axes[3]||0);
+        ri += ls.x;
+        pi += ls.y * -1; // inverted Y
+        yi += rs.x;
+        
+        // Throttle
+        const thrAdd = activeGamepad.buttons[7].value;
+        const thrSub = activeGamepad.buttons[6].value;
+        state.throttle = clamp(state.throttle + (thrAdd - thrSub)*dt*0.5, 0, 1);
+      }
+      
+      // ESP32 IMU
+      if (state.serial) {
+        let sr = angleDiff(state.sensor.roll, state.neutral.roll) / 45;
+        let sp = angleDiff(state.sensor.pitch, state.neutral.pitch) / 45;
+        let sy = angleDiff(state.sensor.yaw, state.neutral.yaw) / 45;
+        ri += clamp(sr, -1, 1);
+        pi += clamp(sp, -1, 1);
+        yi += clamp(sy, -1, 1);
+      }
+      
+      // Demo Autopilot
+      if (state.demo) {
+        const t = performance.now()/1000;
+        pi = Math.sin(t*0.35)*0.12;
+        ri = Math.sin(t*0.55)*0.20;
+        yi = Math.sin(t*0.17)*0.10;
+        document.getElementById('s-text').textContent = 'AUTOPILOT';
+        document.getElementById('s-dot').classList.add('active');
+      }
+
+      // Clamp inputs
+      pi = clamp(pi, -1, 1); ri = clamp(ri, -1, 1); yi = clamp(yi, -1, 1);
+
+      // Flight Assist
+      if (state.flightAssist && pi===0 && ri===0) {
+        state.roll *= (1 - dt*2);
+        state.pitch *= (1 - dt*2);
+      }
+      
+      // Interpolation
+      state.roll += (ri*40 - state.roll) * Math.min(1, dt*5);
+      state.pitch += (pi*24 - state.pitch) * Math.min(1, dt*4);
+      state.heading += (yi*42 - state.roll*0.62) * dt;
+      state.heading = (state.heading + 360) % 360;
+      
+      // Throttle Keyboard
+      if (!state.serial && !state.demo && !activeGamepad) {
+        if (keys.shift) state.throttle = clamp(state.throttle + dt*0.22, 0, 1);
+        if (keys.control) state.throttle = clamp(state.throttle - dt*0.22, 0, 1);
+      }
+      
+      // Speed & Position
+      const targetSpeed = 35 + state.throttle*130 + (state.boost?35:0);
+      state.speed += (targetSpeed - state.speed) * dt * 1.0;
+      
+      const yr = state.heading*Math.PI/180;
+      const pr = state.pitch*Math.PI/180;
+      const forward = Math.cos(pr) * state.speed;
+      const climb = Math.sin(pr) * state.speed;
+      
+      const m = metersPerDeg(state.lat);
+      state.lng += Math.sin(yr)*forward*dt / m.lng;
+      state.lat += Math.cos(yr)*forward*dt / m.lat;
+      state.vs = climb * 196.85; // ft/min
+      
+      const minAlt = state.parking ? 0 : 80;
+      state.alt = clamp(state.alt + climb*dt, minAlt, 5000);
+      
+      state.score += state.speed * dt * 0.08;
+    }
+
+    function renderCamera() {
+      if (!map) return;
+      if (state.fpv) {
+        map.cameraPosition = {lat: state.lat, lng: state.lng, altitude: state.alt + 1.2};
+        map.heading = state.heading;
+        map.tilt = clamp(90 + state.pitch, 10, 89.9);
+        map.roll = state.roll;
+        map.fov = 55;
+      } else {
+        const yr = state.heading*Math.PI/180;
+        const look = 0.0007 + state.speed*0.0000008;
+        map.center = { lat: state.lat + Math.cos(yr)*look, lng: state.lng + Math.sin(yr)*look, altitude: state.alt * 0.72 };
+        map.heading = state.heading;
+        map.tilt = clamp(69 - state.pitch*0.32, 45, 89);
+        map.range = clamp(1200 - state.speed*2.3, 700, 1250);
+        map.roll = state.roll * 0.4;
+      }
+      
+      if (aircraft) {
+        aircraft.position = {lat: state.lat, lng: state.lng, altitude: state.alt};
+        aircraft.orientation = {heading: state.heading, tilt: -state.pitch, roll: -state.roll};
+      }
+    }
+
+    function mission() {
+      if (state.missionIndex >= LANDMARKS.length || state.parking) return;
+      const target = LANDMARKS[state.missionIndex];
+      const dist = distNM(state.lat, state.lng, target.lat, target.lng);
+      
+      document.getElementById('mission-obj').textContent = target.mission;
+      document.getElementById('mission-dist').textContent = dist.toFixed(2) + ' NM';
+      
+      // Close enough to waypoint (approx 0.27 NM = 500m)
+      if (dist < 0.27) {
+        toast('WAYPOINT REACHED: ' + target.name);
+        state.score += 1000;
+        state.missionIndex++;
+        if (state.missionIndex < LANDMARKS.length) {
+          addWaypointMarker(LANDMARKS[state.missionIndex]);
+        } else {
+          // Final mission reached — find nearest airport for parking
+          activateParking();
+        }
+      }
+    }
+
+    function activateParking() {
+      // Find nearest airport
+      let best = null, bestDist = Infinity;
+      for (const ap of AIRPORTS) {
+        const d = distNM(state.lat, state.lng, ap.lat, ap.lng);
+        if (d < bestDist) { bestDist = d; best = ap; }
+      }
+      state.parking = true;
+      state.parkingTarget = best;
+      document.getElementById('t-mode').textContent = 'LANDING';
+      toast('PARKING MODE // TARGET: ' + best.name);
+    }
+
+    function checkParking() {
+      if (!state.parking || !state.parkingTarget) return;
+      
+      // Update nearest airport dynamically
+      let best = null, bestDist = Infinity;
+      for (const ap of AIRPORTS) {
+        const d = distNM(state.lat, state.lng, ap.lat, ap.lng);
+        if (d < bestDist) { bestDist = d; best = ap; }
+      }
+      state.parkingTarget = best;
+      
+      document.getElementById('mission-title').textContent = 'FINAL APPROACH // RWY ' + best.runway;
+      document.getElementById('mission-obj').textContent = 'LAND AT ' + best.name;
+      const distM = bestDist * 1852; // NM to meters
+      const hdgDev = Math.abs(angleDiff(state.heading, best.rwyHdg));
+      const altFt = Math.round(state.alt * 3.28084);
+      const spdKt = Math.round(state.speed * 1.94384);
+      document.getElementById('mission-dist').textContent = 
+        bestDist.toFixed(2) + ' NM | HDG±' + Math.round(hdgDev) + '° | ' + altFt + 'ft | ' + spdKt + 'kt';
+      
+      // Grading check
+      if (distM < 500 && state.alt < 120 && state.speed < 50) {
+        let grade, pts, msg;
+        if (hdgDev < 5 && state.alt < 80 && state.speed < 30) {
+          grade = 'PERFECT'; pts = 500; msg = '✈ PERFECT LANDING!';
+        } else if (hdgDev < 15 && state.alt < 100 && state.speed < 40) {
+          grade = 'GOOD'; pts = 300; msg = '✈ GOOD LANDING';
+        } else {
+          grade = 'ROUGH'; pts = 100; msg = '✈ ROUGH LANDING';
+        }
+        toast(msg + ' +' + pts + ' PTS');
+        state.score += pts;
+        // Haptic feedback
+        try {
+          if (activeGamepad && activeGamepad.vibrationActuator) {
+            activeGamepad.vibrationActuator.playEffect('dual-rumble', {
+              startDelay: 0, duration: 600,
+              weakMagnitude: grade==='PERFECT'?1.0:0.5,
+              strongMagnitude: grade==='PERFECT'?1.0:0.5
+            });
+          }
+        } catch(e) {}
+        state.parking = false;
+        document.getElementById('t-mode').textContent = 'FLIGHT';
+        setTimeout(() => { toast('MISSION COMPLETE! PRESS R TO RESTART'); }, 3000);
+      }
+    }
+
+    function updateAttitudeIndicator() {
+      const cvs = document.getElementById('attitude-canvas');
+      const ctx = cvs.getContext('2d');
+      const w = cvs.width, h = cvs.height;
+      
+      ctx.clearRect(0,0,w,h);
+      ctx.save();
+      ctx.translate(w/2, h/2);
+      ctx.rotate(-state.roll * Math.PI/180);
+      
+      const pitchOffset = state.pitch * 2; // scale pitch
+      
+      // Sky
+      ctx.fillStyle = '#1c7cb8';
+      ctx.fillRect(-w, -h*2 + pitchOffset, w*2, h*2);
+      // Ground
+      ctx.fillStyle = '#7a5a3a';
+      ctx.fillRect(-w, pitchOffset, w*2, h*2);
+      
+      // Horizon line
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(-w, pitchOffset); ctx.lineTo(w, pitchOffset); ctx.stroke();
+      
+      ctx.restore();
+      
+      // Center reference
+      ctx.strokeStyle = 'yellow';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(w/2 - 20, h/2); ctx.lineTo(w/2 - 5, h/2);
+      ctx.moveTo(w/2 + 20, h/2); ctx.lineTo(w/2 + 5, h/2);
+      ctx.moveTo(w/2, h/2 - 5); ctx.lineTo(w/2, h/2 + 5);
+      ctx.stroke();
+    }
+
+    function hud() {
+      document.getElementById('t-alt').textContent = Math.round(state.alt * 3.28084);
+      document.getElementById('t-spd').textContent = Math.round(state.speed * 1.94384);
+      document.getElementById('t-hdg').textContent = Math.round(state.heading).toString().padStart(3, '0');
+      document.getElementById('t-vs').textContent = Math.round(state.vs);
+      document.getElementById('t-pit').textContent = state.pitch.toFixed(1);
+      document.getElementById('t-rol').textContent = state.roll.toFixed(1);
+      document.getElementById('t-thr').textContent = Math.round(state.throttle * 100);
+      document.getElementById('t-g').textContent = (1 + Math.abs(state.roll)/180).toFixed(2);
+      
+      document.getElementById('t-lat').textContent = state.lat.toFixed(5);
+      document.getElementById('t-lng').textContent = state.lng.toFixed(5);
+      document.getElementById('t-score').textContent = Math.floor(state.score);
+      
+      document.getElementById('speedbar').style.width = (state.throttle * 100) + '%';
+      
+      if (state.fpv) {
+        document.getElementById('comp-val').textContent = Math.round(state.heading).toString().padStart(3, '0') + '°';
+        updateAttitudeIndicator();
+      }
+    }
+
+    function loop(t) {
+      const dt = Math.min(0.04, (t - state.last)/1000);
+      state.last = t;
+      if (state.alive) {
+        pollGamepad();
+        controls(dt);
+        mission();
+        checkParking();
+        renderCamera();
+      }
+      hud();
+      requestAnimationFrame(loop);
+    }
+
+    // --- Boot ---
+    document.getElementById('btn-start').onclick = () => start(false, false);
+    document.getElementById('btn-serial').onclick = () => start(true, false);
+    document.getElementById('btn-demo').onclick = () => start(false, true);
+
+    function start(serial, demo) {
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('hud').classList.remove('hidden');
+      state.demo = demo;
+      reset();
+      
+      if (serial) connectSerial();
+      else if (!demo && !activeGamepad) {
+        document.getElementById('s-text').textContent = 'KEYBOARD';
+        document.getElementById('s-dot').classList.add('active');
+      }
+
+      if (!loopStarted) {
+        init3D();
+        loopStarted = true;
+        requestAnimationFrame(loop);
+      }
+    }
+  </script>
+</body>
+</html>
